@@ -1,0 +1,35 @@
+{ ... }:
+
+# Template for git-local.nix (Arch Linux)
+# Copy this file to git-local.nix and fill in your details
+# git-local.nix should be gitignored
+
+{
+  programs.git = {
+    # Default identity (used when no condition matches)
+    userName = "Your Name";
+    userEmail = "your@email.com";
+
+    # Directory-specific identities
+    includes = [
+      {
+        condition = "gitdir:~/work/";
+        contents = {
+          user = {
+            name = "Work Name";
+            email = "work@company.com";
+          };
+        };
+      }
+      {
+        condition = "gitdir:~/opensource/";
+        contents = {
+          user = {
+            name = "OSS Username";
+            email = "oss@email.com";
+          };
+        };
+      }
+    ];
+  };
+}
