@@ -1,0 +1,3 @@
+return {
+  bigfile = { enabled = true },
+}

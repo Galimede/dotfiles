@@ -11,7 +11,7 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 - **Window manager:** [Niri](https://github.com/YaLTeR/niri) (Wayland, scrollable tiling)
 - **Terminal:** Kitty
 - **Shell:** Fish + Starship prompt
-- **Editor:** Zed
+- **Editor:** Neovim / Zed
 - **Browser:** Zen Browser
 - **Theme:** Catppuccin Mocha everywhere (Kitty, Zed, system dark mode via GTK/Qt/dconf)
 - **GPU:** Intel Arc, GUI apps wrapped with [nixGL](https://github.com/nix-community/nixGL) for hardware acceleration
@@ -23,6 +23,7 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 | `fish.nix` | Fish shell, aliases, custom functions |
 | `starship.nix` | Starship prompt |
 | `kitty.nix` | Kitty terminal (nixGL-wrapped) |
+| `neovim.nix` | Neovim (plugins, LSP servers, formatters via Nix) |
 | `zed.nix` | Zed editor (nixGL-wrapped) |
 | `zen.nix` | Zen Browser |
 | `niri.nix` | Niri window manager dotfiles |
@@ -42,6 +43,7 @@ The `dotfiles/` directory contains raw config files that modules source via `hom
 - `fish/functions/` — Custom Fish functions (git helpers like `gwip`, `gcy`, `gfom`)
 - `niri/config.kdl` — Niri window manager configuration
 - `starship.toml` — Starship prompt configuration
+- `nvim/` — Neovim configuration (init.lua, per-module plugin configs, LSP server configs)
 - `claude/` — Claude Code skills and settings
 
 ## Prerequisites

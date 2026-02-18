@@ -69,6 +69,8 @@
     keybindings = {
       "ctrl+shift+up" = "previous_window";
       "ctrl+shift+down" = "next_window";
+      "ctrl+shift+e" = "launch --type=tab --cwd=current nvim";
+      "ctrl+shift+d" = "launch --type=tab --cwd=current nvim -c CodeDiff";
     };
   };
 }

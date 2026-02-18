@@ -20,6 +20,7 @@ in {
     ./lazygit.nix
     ./zed.nix
     ./fonts.nix
+    ./neovim.nix
   ];
 
   home.username = "mdegand";
