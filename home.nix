@@ -13,7 +13,7 @@ in {
     ./zen.nix
     ./1password.nix
     ./git.nix
-    ./git-local.nix  # gitignored - copy from git-local.nix.template
+    ./git-local.nix
     ./claude.nix
     ./mise.nix
     ./fzf.nix
