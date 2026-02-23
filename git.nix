@@ -3,6 +3,10 @@
 {
   programs.git = {
     enable = true;
+    ignores = [
+      ".zed"
+      ".claude/settings.local.json"
+    ];
     settings = {
       push.autoSetupRemote = true;
       remote.pushDefault = "origin";
