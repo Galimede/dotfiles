@@ -21,6 +21,7 @@ in {
     ./zed.nix
     ./fonts.nix
     ./neovim.nix
+    ./codium.nix
   ];
 
   home.username = "mdegand";

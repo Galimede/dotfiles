@@ -35,6 +35,7 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 | `fonts.nix` | Fonts (Dank Mono, Hack Nerd Font, Noto Color Emoji) + fontconfig |
 | `claude.nix` | Claude Code settings and skills |
 | `1password.nix` | 1Password browser integration |
+| `codium.nix` | VS Codium editor |
 
 ## Dotfiles
 
