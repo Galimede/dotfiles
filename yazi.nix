@@ -7,9 +7,9 @@
     keymap = {
       manager.prepend_keymap = [
         {
-          on = [ "y" "i" ];
+          on = [ "y" "f" ];
           run = ''shell 'wl-copy --type "$(file -b --mime-type "$0")" < "$0"' --confirm'';
-          desc = "Copy image to clipboard";
+          desc = "Copy file to clipboard";
         }
       ];
     };
