@@ -33,22 +33,14 @@ in {
         };
         tabs = {
           bar.bg = "#181825";
-          odd.normal = {
-            bg = "#181825";
-            fg = "#cdd6f4";
-          };
-          even.normal = {
-            bg = "#1e1e2e";
-            fg = "#cdd6f4";
-          };
-          odd.selected = {
-            bg = "#313244";
-            fg = "#cdd6f4";
-          };
-          even.selected = {
-            bg = "#313244";
-            fg = "#cdd6f4";
-          };
+          odd.bg = "#181825";
+          odd.fg = "#cdd6f4";
+          even.bg = "#1e1e2e";
+          even.fg = "#cdd6f4";
+          selected.odd.bg = "#313244";
+          selected.odd.fg = "#cdd6f4";
+          selected.even.bg = "#313244";
+          selected.even.fg = "#cdd6f4";
           indicator.start = "#89b4fa";
           indicator.stop = "#a6e3a1";
           indicator.error = "#f38ba8";
@@ -128,19 +120,157 @@ in {
     };
 
     keyBindings.normal = {
-      "<Alt-Shift-p>" = "spawn --userscript qute-1pass";
+      "<Alt-Shift-p>" = "spawn --userscript qute-1pass-v2";
+    };
+
+    aliases = {
+      cheatsheet = "open qute://help/img/cheatsheet-big.png";
     };
   };
 
   home.packages = with pkgs; [
-    rofi-wayland
+    rofi
   ];
 
+  # Patched qute-1pass for op CLI v2 + biometric unlock + Wayland (wl-copy)
+  home.file.".local/share/qutebrowser/userscripts/qute-1pass-v2" = {
+    executable = true;
+    text = ''
+      #!/usr/bin/env bash
+      set +e
+
+      javascript_escape() {
+          sed "s,[\\\\'\"\/],\\\\&,g" <<< "$1"
+      }
+
+      js() {
+      cat <<JSEOF
+          function isVisible(elem) {
+              var style = elem.ownerDocument.defaultView.getComputedStyle(elem, null);
+              if (style.getPropertyValue("visibility") !== "visible" ||
+                  style.getPropertyValue("display") === "none" ||
+                  style.getPropertyValue("opacity") === "0") {
+                  return false;
+              }
+              return elem.offsetWidth > 0 && elem.offsetHeight > 0;
+          };
+          function hasPasswordField(form) {
+              var inputs = form.getElementsByTagName("input");
+              for (var j = 0; j < inputs.length; j++) {
+                  var input = inputs[j];
+                  if (input.type == "password") {
+                      return true;
+                  }
+              }
+              return false;
+          };
+          function loadData2Form (form) {
+              var inputs = form.getElementsByTagName("input");
+              for (var j = 0; j < inputs.length; j++) {
+                  var input = inputs[j];
+                  if (isVisible(input) && (input.type == "text" || input.type == "email")) {
+                      input.focus();
+                      input.value = "$(javascript_escape "''${USERNAME}")";
+                      input.dispatchEvent(new Event('change'));
+                      input.blur();
+                  }
+                  if (input.type == "password") {
+                      input.focus();
+                      input.value = "$(javascript_escape "''${PASSWORD}")";
+                      input.dispatchEvent(new Event('change'));
+                      input.blur();
+                  }
+              }
+          };
+          var forms = document.getElementsByTagName("form");
+          if("$(javascript_escape "''${QUTE_URL}")" == window.location.href) {
+              for (i = 0; i < forms.length; i++) {
+                  if (hasPasswordField(forms[i])) {
+                      loadData2Form(forms[i]);
+                  }
+              }
+          } else {
+              alert("Secrets will not be inserted.\nUrl of this page and the one where the user script was started differ.");
+          }
+      JSEOF
+      }
+
+      URL=$(echo "$QUTE_URL" | awk -F/ '{print $3}' | sed 's/www.//g')
+
+      echo "message-info 'Looking for password for $URL...'" >> "$QUTE_FIFO"
+
+      # op CLI v2 with biometric unlock — no signin needed
+      # Find item by URL match
+      ITEM_JSON=$(op item list --format=json 2>/dev/null) || ITEM_JSON=""
+
+      if [ -z "$ITEM_JSON" ]; then
+          echo "message-error '1Password: could not list items (is the app unlocked?)'" >> "$QUTE_FIFO"
+          exit 1
+      fi
+
+      # Find all items matching the URL
+      MATCHES=$(echo "$ITEM_JSON" | jq --arg url "$URL" -r '[.[] | select(.urls != null) | select([.urls[].href] | any(test(".*\($url).*")))]') || MATCHES="[]"
+      MATCH_COUNT=$(echo "$MATCHES" | jq -r 'length')
+
+      if [ "$MATCH_COUNT" -eq 1 ]; then
+          UUID=$(echo "$MATCHES" | jq -r '.[0].id')
+      elif [ "$MATCH_COUNT" -gt 1 ]; then
+          # Multiple matches — let user pick via rofi
+          TITLE=$(echo "$MATCHES" | jq -r '.[].title' | rofi -dmenu -i -p "1Password ($MATCH_COUNT matches)") || TITLE=""
+          if [ -n "$TITLE" ]; then
+              UUID=$(echo "$MATCHES" | jq --arg title "$TITLE" -r '[.[] | select(.title == $title)] | .[0].id // empty') || UUID=""
+          fi
+      else
+          # No URL match — let user pick from all items via rofi
+          echo "message-info 'No entry found for $URL, showing picker...'" >> "$QUTE_FIFO"
+          TITLE=$(echo "$ITEM_JSON" | jq -r '.[].title' | rofi -dmenu -i -p "1Password") || TITLE=""
+          if [ -n "$TITLE" ]; then
+              UUID=$(echo "$ITEM_JSON" | jq --arg title "$TITLE" -r '[.[] | select(.title == $title)] | .[0].id // empty') || UUID=""
+          fi
+      fi
+
+      if [ -z "$UUID" ]; then
+          echo "message-error 'No entry selected'" >> "$QUTE_FIFO"
+          exit 1
+      fi
+
+      # Fetch full item details (op v2 syntax)
+      ITEM=$(op item get "$UUID" --format=json 2>/dev/null) || ITEM=""
+
+      if [ -z "$ITEM" ]; then
+          echo "message-error '1Password: could not fetch item details'" >> "$QUTE_FIFO"
+          exit 1
+      fi
+
+      PASSWORD=$(echo "$ITEM" | jq -r '[.fields[] | select(.purpose == "PASSWORD")] | .[0].value // empty')
+
+      if [ -n "$PASSWORD" ]; then
+          TITLE=$(echo "$ITEM" | jq -r '.title')
+          USERNAME=$(echo "$ITEM" | jq -r '[.fields[] | select(.purpose == "USERNAME")] | .[0].value // empty')
+
+          printjs() {
+              js | sed 's,//.*$,,' | tr '\n' ' '
+          }
+          echo "jseval -q $(printjs)" >> "$QUTE_FIFO"
+
+          # Copy TOTP to clipboard if available (using wl-copy for Wayland)
+          TOTP=$(op item get "$UUID" --otp 2>/dev/null) || TOTP=""
+          if [ -n "$TOTP" ]; then
+              echo "$TOTP" | wl-copy
+              echo "message-info 'Pasted OTP for $TITLE to clipboard'" >> "$QUTE_FIFO"
+          fi
+      else
+          echo "message-error 'No password found for $URL'" >> "$QUTE_FIFO"
+      fi
+    '';
+  };
+
   # Wrapper script with GPU acceleration (OpenGL + Vulkan for Intel Arc)
+  # Note: unlike Zed, qutebrowser uses Nix Qt libraries, so we must NOT prepend /usr/lib
+  # to LD_LIBRARY_PATH (that would shadow Nix Qt with system Qt, breaking QtWebEngine).
+  # nixGLIntel handles the OpenGL driver path; we only add the Vulkan ICD.
   home.file.".local/bin/qutebrowser".text = ''
     #!/bin/sh
-    # Use system Vulkan loader and ICD for Intel Arc GPU
-    export LD_LIBRARY_PATH=/usr/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.x86_64.json
     exec ${nixGLPkg}/bin/nixGLIntel ${pkgs.qutebrowser}/bin/qutebrowser "$@"
   '';

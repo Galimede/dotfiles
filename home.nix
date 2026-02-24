@@ -22,6 +22,8 @@ in {
     ./fonts.nix
     ./neovim.nix
     ./codium.nix
+    ./qutebrowser.nix
+    ./yazi.nix
   ];
 
   home.username = "mdegand";
@@ -51,7 +53,6 @@ in {
     random-labels
     clever-tools
     obsidian
-    yazi
     zoxide
     git-absorb
     nixd              # Nix language server for Zed
