@@ -5,10 +5,10 @@
     # Global Claude Code instructions
 
     ## playwright-cli
-    Always pass `--executable-path=${pkgs.chromium}/bin/chromium` when using playwright-cli.
-    If asked to use Zen browser, pass `--browser=firefox --executable-path=${
+    Always prefix playwright-cli commands with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium` when using playwright-cli.
+    If asked to use Zen browser, prefix with `PLAYWRIGHT_FIREFOX_EXECUTABLE_PATH=${
       zen-browser.packages.${pkgs.system}.default
-    }/bin/zen` instead.
+    }/bin/zen` and pass `--browser=firefox` instead.
   '';
 
   home.file.".claude/skills".source = ./dotfiles/claude/skills;
