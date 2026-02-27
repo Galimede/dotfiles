@@ -6,6 +6,7 @@
     ignores = [
       ".zed"
       ".claude/settings.local.json"
+      ".nvim.lua"
     ];
     settings = {
       push.autoSetupRemote = true;
