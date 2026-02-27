@@ -3,7 +3,7 @@ local map = function(lhs, rhs, desc)
 end
 
 -- Find
-map("<leader><space>", function() require("snacks").picker.smart() end, "Find Files (Smart)")
+map("<leader><space>", function() require("snacks").picker.files() end, "Find Files")
 map("<leader>ff", function() require("snacks").picker.files() end, "Find Files")
 map("<leader>,", function() require("snacks").picker.buffers() end, "Buffers")
 map("<leader>/", function() require("snacks").picker.grep() end, "Grep")
