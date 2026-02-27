@@ -12,6 +12,7 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 - **Terminal:** Kitty
 - **Shell:** Fish + Starship prompt
 - **Editor:** Neovim / Zed
+- **Git:** [GitButler](https://gitbutler.com/) (GUI via Nix, CLI via install script)
 - **Browser:** Zen Browser
 - **Theme:** Catppuccin Mocha everywhere (Kitty, Zed, system dark mode via GTK/Qt/dconf)
 - **GPU:** Intel Arc, GUI apps wrapped with [nixGL](https://github.com/nix-community/nixGL) for hardware acceleration
@@ -66,6 +67,9 @@ cp git-local.nix.template git-local.nix
 
 # Apply configuration
 home-manager switch
+
+# Install tools not managed by Nix
+./setup.sh
 ```
 
 ## Common commands

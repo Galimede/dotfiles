@@ -12,6 +12,9 @@
 
       # Zoxide
       zoxide init fish | source
+
+      # GitButler CLI completions (installed externally via install script)
+      but completions fish | source
     '';
 
     shellInit = ''
@@ -43,6 +46,12 @@
   # Complex functions stay as files
   home.file.".config/fish/functions" = {
     source = ./dotfiles/fish/functions;
+    recursive = true;
+  };
+
+  # Extra conf.d scripts (GitButler dynamic completions, etc.)
+  home.file.".config/fish/conf.d" = {
+    source = ./dotfiles/fish/conf.d;
     recursive = true;
   };
 }
