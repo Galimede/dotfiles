@@ -96,6 +96,13 @@ output "Dell Inc. DELL P2419H BH3HYT2" {
     position x=1707 y=0
 }
 
+output "Lenovo Group Limited P24h-2L V307FT7L" {
+    mode "2560x1440@59.951"
+    scale 1.0
+    transform "normal"
+    position x=-423 y=-1440
+}
+
 
 // Settings that influence how windows are positioned and sized.
 // Find more information on the wiki:
@@ -181,6 +188,7 @@ overview {
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
 spawn-sh-at-startup "qs -c noctalia-shell"
+spawn-at-startup "~/.config/niri/monitor-layout.sh"
 
 hotkey-overlay {
     // Uncomment this line to disable the "Important Hotkeys" pop-up at startup.
