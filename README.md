@@ -13,7 +13,8 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 - **Shell:** Fish + Starship prompt
 - **Editor:** Neovim / Zed
 - **Git:** [GitButler](https://gitbutler.com/) (GUI via Nix, CLI via install script)
-- **Browser:** Zen Browser
+- **File manager:** [Yazi](https://yazi-rs.github.io/) (terminal file manager)
+- **Browser:** Zen Browser / [Qutebrowser](https://qutebrowser.org/) (keyboard-driven)
 - **Theme:** Catppuccin Mocha everywhere (Kitty, Zed, system dark mode via GTK/Qt/dconf)
 - **GPU:** Intel Arc, GUI apps wrapped with [nixGL](https://github.com/nix-community/nixGL) for hardware acceleration
 
@@ -35,6 +36,8 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 | `mise.nix` | Runtime version manager |
 | `fonts.nix` | Fonts (Dank Mono, Hack Nerd Font, Noto Color Emoji) + fontconfig |
 | `claude.nix` | Claude Code settings and skills |
+| `yazi.nix` | Yazi file manager and keybindings |
+| `qutebrowser.nix` | Qutebrowser (nixGL-wrapped) |
 | `1password.nix` | 1Password browser integration |
 | `codium.nix` | VS Codium editor |
 
@@ -43,7 +46,9 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 The `dotfiles/` directory contains raw config files that modules source via `home.file`:
 
 - `fish/functions/` — Custom Fish functions (git helpers like `gwip`, `gcy`, `gfom`)
+- `fish/conf.d/` — Fish conf.d scripts (GitButler dynamic completions)
 - `niri/config.kdl` — Niri window manager configuration
+- `niri/monitor-layout.sh` — Dynamic monitor positioning script
 - `starship.toml` — Starship prompt configuration
 - `nvim/` — Neovim configuration (init.lua, per-module plugin configs, LSP server configs)
 - `claude/` — Claude Code skills and settings
