@@ -169,7 +169,8 @@ layout {
     }
 }
 layer-rule {
-    match namespace="^quickshell$"
+    // noctalia-qs registers layers as "noctalia-*" (e.g. noctalia-bar-content-DP-1)
+    match namespace="^noctalia-"
     place-within-backdrop true
 }
 overview {
@@ -187,6 +188,7 @@ overview {
 //spawn-at-startup "waybar"
 
 // To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
+// NOTE: upstream docs say "noctalia-qs" but the Arch AUR package installs the binary as "qs"
 spawn-sh-at-startup "qs -c noctalia-shell"
 spawn-at-startup "~/.config/niri/monitor-layout.sh"
 
