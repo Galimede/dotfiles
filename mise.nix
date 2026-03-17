@@ -7,6 +7,13 @@
   programs.mise = {
     enable = true;
     enableFishIntegration = true;
+    globalConfig = {
+      tools = {
+        node = "lts";
+        "npm:@playwright/cli" = "0.1.0";
+        "npm:ctx7" = "latest";
+      };
+    };
   };
 
   # Fish function to detect volta version and set MISE_NODE_VERSION
