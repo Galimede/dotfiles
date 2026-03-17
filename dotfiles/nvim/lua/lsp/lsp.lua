@@ -60,8 +60,13 @@ end, { desc = "LSP: Goto Definition (Split)" })
 
 -- Diagnostic navigation
 vim.keymap.set({ "n", "v" }, "D", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
+vim.keymap.set({ "n", "v" }, "<leader>cd", vim.diagnostic.open_float, { desc = "Line Diagnostics" })
 vim.keymap.set({ "n", "v" }, "]d", function() vim.diagnostic.jump({ count = 1, float = true }) end, { desc = "Next Diagnostic" })
 vim.keymap.set({ "n", "v" }, "[d", function() vim.diagnostic.jump({ count = -1, float = true }) end, { desc = "Prev Diagnostic" })
+vim.keymap.set({ "n", "v" }, "]e", function() vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.ERROR }) end, { desc = "Next Error" })
+vim.keymap.set({ "n", "v" }, "[e", function() vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.ERROR }) end, { desc = "Prev Error" })
+vim.keymap.set({ "n", "v" }, "]w", function() vim.diagnostic.jump({ count = 1, float = true, severity = vim.diagnostic.severity.WARN }) end, { desc = "Next Warning" })
+vim.keymap.set({ "n", "v" }, "[w", function() vim.diagnostic.jump({ count = -1, float = true, severity = vim.diagnostic.severity.WARN }) end, { desc = "Prev Warning" })
 
 -- Code actions
 vim.keymap.set({ "n", "v" }, "<leader>ca", vim.lsp.buf.code_action, { desc = "Code Action" })
@@ -103,4 +108,5 @@ require("lazydev").setup()
 require("todo-comments").setup()
 vim.keymap.set("n", "]t", function() require("todo-comments").jump_next() end, { desc = "Next todo comment" })
 vim.keymap.set("n", "[t", function() require("todo-comments").jump_prev() end, { desc = "Previous todo comment" })
-vim.keymap.set("n", "<leader>st", "<cmd>TodoTelescope<cr>", { desc = "Todo Comments" })
+vim.keymap.set("n", "<leader>st", function() require("snacks").picker.todo_comments() end, { desc = "Todo Comments" })
+vim.keymap.set("n", "<leader>sT", function() require("snacks").picker.todo_comments({ keywords = { "TODO", "FIX", "FIXME" } }) end, { desc = "Todo/Fix/Fixme" })
