@@ -42,11 +42,26 @@ in {
     "onepassword-password-manager"
   ];
 
+  # Fix less search input broken by kitty keyboard protocol (xterm-kitty terminfo).
+  # less doesn't support the kitty keyboard protocol, so we wrap it with TERM=xterm-256color.
+  # This wrapper replaces `less` in PATH so all programs (bat, man, git, etc.) benefit.
+  # BAT_PAGER is needed because bat calls less by its own path, not via PATH.
+  home.file.".local/bin/less" = {
+    executable = true;
+    text = ''
+      #!/bin/sh
+      exec env TERM=xterm-256color ${pkgs.less}/bin/less "$@"
+    '';
+  };
+
+  home.sessionVariables = {
+    BAT_PAGER = "$HOME/.local/bin/less -RF";
+  };
+
   home.packages = with pkgs; [
     ripgrep
     fd
     bat
-    less
     jq  # needed for gcy function
     nixGLPkg
     clever-switch-profile
