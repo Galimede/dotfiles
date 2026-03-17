@@ -127,7 +127,7 @@ in {
   home.file.".local/bin/codium".text = ''
     #!/bin/sh
     export LD_LIBRARY_PATH=/usr/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
-    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.x86_64.json
+    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.json
     exec ${nixGLPkg}/bin/nixGLIntel ${pkgs.vscodium}/bin/codium "$@"
   '';
   home.file.".local/bin/codium".executable = true;

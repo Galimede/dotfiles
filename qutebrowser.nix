@@ -16,6 +16,20 @@ in {
     settings = {
       colors.webpage.preferred_color_scheme = "dark";
       scrolling.smooth = true;
+      spellcheck.languages = [ "en-US" "fr-FR" ];
+
+      content.blocking.enabled = true;
+      content.blocking.method = "adblock";
+      content.blocking.adblock.lists = [
+        "https://easylist.to/easylist/easylist.txt"
+        "https://easylist.to/easylist/easyprivacy.txt"
+        "https://easylist.to/easylistfrench/easylistfrench.txt"
+        "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/filters.txt"
+        "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/privacy.txt"
+        "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/badware.txt"
+        "https://raw.githubusercontent.com/uBlockOrigin/uAssets/master/filters/annoyances.txt"
+        "https://secure.fanboy.co.nz/fanboy-cookiemonster.txt"
+      ];
 
       # Catppuccin Mocha base colors
       colors = {
@@ -121,6 +135,8 @@ in {
 
     keyBindings.normal = {
       "<Alt-Shift-p>" = "spawn --userscript qute-1pass-v2";
+      "I" = "fake-key <Home> ;; mode-enter insert";
+      "A" = "fake-key <End> ;; mode-enter insert";
     };
 
     aliases = {
@@ -271,7 +287,7 @@ in {
   # nixGLIntel handles the OpenGL driver path; we only add the Vulkan ICD.
   home.file.".local/bin/qutebrowser".text = ''
     #!/bin/sh
-    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.x86_64.json
+    export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.json
     exec ${nixGLPkg}/bin/nixGLIntel ${pkgs.qutebrowser}/bin/qutebrowser "$@"
   '';
   home.file.".local/bin/qutebrowser".executable = true;
