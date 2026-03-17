@@ -38,7 +38,7 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 | `claude.nix` | Claude Code settings and skills |
 | `yazi.nix` | Yazi file manager and keybindings |
 | `qutebrowser.nix` | Qutebrowser (nixGL-wrapped) |
-| `1password.nix` | 1Password browser integration |
+| `1password.nix` | 1Password desktop entry override (XWayland fix for niri) |
 | `codium.nix` | VS Codium editor |
 
 ## Dotfiles

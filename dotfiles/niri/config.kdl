@@ -258,6 +258,20 @@ window-rule {
     // block-out-from "screencast"
 }
 
+// Polkit auth: floating + hidden from screen capture.
+window-rule {
+    match app-id=r#"hyprpolkitagent"#
+    open-floating true
+    block-out-from "screen-capture"
+}
+
+// 1Password: hidden from screen capture only.
+// Note: actual app-id is lowercase "1password".
+window-rule {
+    match app-id="1password"
+    block-out-from "screen-capture"
+}
+
 // Rounded corners for all windows.
 window-rule {
     geometry-corner-radius 12

@@ -4,11 +4,20 @@
   home.file.".claude/CLAUDE.md".text = ''
     # Global Claude Code instructions
 
+    ## Environment
+    Home-manager (Nix) is used for system/tool configuration. When I talk about "config", it usually refers to this project (~/.config/home-manager). When fixing tool issues (qutebrowser, kitty, yazi, niri, etc.), check and modify the home-manager config rather than editing dotfiles directly.
+    This global CLAUDE.md is managed by home-manager via `claude.nix`. To modify it, edit the `home.file.".claude/CLAUDE.md".text` block in `~/.config/home-manager/claude.nix`, not `~/.claude/CLAUDE.md` directly.
+    Nix flakes only see git-tracked files. Always `git add` new or modified files before running `home-manager switch`, otherwise they will be silently ignored.
+
     ## playwright-cli
-    Always prefix playwright-cli commands with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium` when using playwright-cli.
-    If asked to use Zen browser, prefix with `PLAYWRIGHT_FIREFOX_EXECUTABLE_PATH=${
+    Before the first `playwright-cli open` of a session, create missing lock files that Playwright requires:
+    ```
+    touch ~/.cache/ms-playwright/firefox-*/firefox/lock ~/.cache/ms-playwright/chromium-*/chrome-linux64/lock 2>/dev/null
+    ```
+    For Chromium: prefix commands with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium`.
+    For Zen browser: prefix with `PLAYWRIGHT_FIREFOX_EXECUTABLE_PATH=${
       zen-browser.packages.${pkgs.system}.default
-    }/bin/zen` and pass `--browser=firefox` instead.
+    }/bin/zen` and pass `--browser=firefox`.
   '';
 
   home.file.".claude/skills".source = ./dotfiles/claude/skills;
@@ -20,6 +29,9 @@
   home.file.".claude/statusline.js".source = ./dotfiles/claude/statusline.js;
 
   home.file.".claude/settings.json".text = builtins.toJSON {
+    env = {
+      ENABLE_LSP_TOOL = "1";
+    };
     includeCoAuthoredBy = false;
     statusLine = {
       type = "command";

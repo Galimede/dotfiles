@@ -6,6 +6,14 @@ allowed-tools: Bash(playwright-cli:*)
 
 # Browser Automation with playwright-cli
 
+## NixOS / Custom browsers setup
+
+Before opening any browser for the first time in a session, ensure Playwright lock files exist:
+```bash
+touch ~/.cache/ms-playwright/firefox-*/firefox/lock ~/.cache/ms-playwright/chromium-*/chrome-linux64/lock 2>/dev/null
+```
+This is required because Playwright checks for these files even when using custom executables.
+
 ## Quick start
 
 ```bash

@@ -1,5 +1,8 @@
-{ pkgs, ... }:
+{ pkgs, nixgl, ... }:
 
+let
+  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLIntel;
+in
 {
   # Niri has no Home Manager module, keep config as raw file
   home.file.".config/niri/config.kdl".source = ./dotfiles/niri/config.kdl;
@@ -9,15 +12,15 @@
   };
 
   # Polkit authentication agent for run0 / graphical privilege escalation
-  systemd.user.services.polkit-gnome-authentication-agent-1 = {
+  systemd.user.services.hyprpolkitagent = {
     Unit = {
-      Description = "Polkit GNOME authentication agent";
+      Description = "Hyprland Polkit authentication agent";
       PartOf = [ "graphical-session.target" ];
       After = [ "graphical-session.target" ];
     };
     Service = {
       Type = "simple";
-      ExecStart = "${pkgs.polkit_gnome}/libexec/polkit-gnome-authentication-agent-1";
+      ExecStart = "${nixGLPkg}/bin/nixGLIntel ${pkgs.hyprpolkitagent}/libexec/hyprpolkitagent";
       Restart = "on-failure";
       RestartSec = 1;
       TimeoutStopSec = 10;
