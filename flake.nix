@@ -32,7 +32,24 @@
       config.allowUnfreePredicate = pkg: builtins.elem (nixpkgs.lib.getName pkg) [
         "onepassword-password-manager"
       ];
-      overlays = [ nur.overlays.default ];
+      overlays = [
+        nur.overlays.default
+        (final: prev: let
+          # Create a symlink of electron named "obsidian" so the CLI
+          # process name check (electron !== obsidian) passes.
+          electronAsObsidian = prev.runCommand "electron-as-obsidian" {} ''
+            mkdir -p $out/bin
+            ln -s ${prev.electron}/bin/electron $out/bin/obsidian
+          '';
+        in {
+          obsidian = prev.obsidian.overrideAttrs (old: {
+            installPhase = builtins.replaceStrings
+              [ "${prev.electron}/bin/electron" ]
+              [ "${electronAsObsidian}/bin/obsidian" ]
+              old.installPhase;
+          });
+        })
+      ];
     };
   in {
     homeConfigurations."mdegand" = home-manager.lib.homeManagerConfiguration {
