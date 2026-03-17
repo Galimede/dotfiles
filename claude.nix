@@ -9,6 +9,9 @@
     This global CLAUDE.md is managed by home-manager via `claude.nix`. To modify it, edit the `home.file.".claude/CLAUDE.md".text` block in `~/.config/home-manager/claude.nix`, not `~/.claude/CLAUDE.md` directly.
     Nix flakes only see git-tracked files. Always `git add` new or modified files before running `home-manager switch`, otherwise they will be silently ignored.
 
+    ## Workflow Rules
+    Before editing code, read and understand the full context first. Check related files, existing patterns, and architecture specs before making any changes. Never start editing after seeing only part of the picture.
+
     ## playwright-cli
     Before the first `playwright-cli open` of a session, create missing lock files that Playwright requires:
     ```
@@ -42,9 +45,7 @@
         "Fetch"
         "WebFetch"
         "WebSearch"
-        "mcp__context7__resolve-library-id"
-        "mcp__context7__get-library-docs"
-        "mcp__context7__query-docs"
+        "Bash(ctx7:*)"
         "Bash(awk:*)"
         "Bash(cat:*)"
         "Bash(curl:*)"
