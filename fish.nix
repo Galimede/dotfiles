@@ -19,6 +19,9 @@
 
     shellInit = ''
       fish_add_path -g ~/.local/bin
+
+      # Disable GitButler CLI pager (added in but 0.19.4)
+      set -gx BUT_PAGER cat
     '';
 
     shellAliases = {
