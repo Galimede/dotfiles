@@ -68,3 +68,7 @@ Note: `--flake .` is not needed when running from `~/.config/home-manager` (the 
 - Unfree packages must be explicitly allowlisted in both `flake.nix` and `home.nix` (`allowUnfreePredicate`)
 - Nix formatting follows `nixfmt-rfc-style`
 - Flake inputs that depend on nixpkgs use `inputs.nixpkgs.follows = "nixpkgs"` to avoid duplicate nixpkgs
+
+## Binary Verification
+
+Before editing config files to use a binary (e.g., `${pkgs.foo}/bin/bar`), verify the correct binary name: check changelogs or run `which`/`command -v` first.
