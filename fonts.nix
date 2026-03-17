@@ -3,6 +3,8 @@
 {
   home.packages = [
     private-fonts.packages.${pkgs.system}.dank-mono
+    pkgs.noto-fonts              # Latin, Cyrillic, Greek, Arabic, Hebrew, Thai, etc.
+    pkgs.noto-fonts-cjk-sans     # Chinese, Japanese, Korean
     pkgs.noto-fonts-color-emoji  # Emoji support (browsers, Obsidian, etc.)
     pkgs.nerd-fonts.symbols-only  # Nerd Font icons (starship, etc.)
     pkgs.nerd-fonts.hack  # Hack with Nerd Font glyphs (terminal)
