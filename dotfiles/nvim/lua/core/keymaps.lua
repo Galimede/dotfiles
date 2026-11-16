@@ -84,9 +84,6 @@ map("n", "<leader>fn", "<cmd>enew<cr>", { desc = "New file" })
 -- Keywordprg
 map("n", "<leader>K", "<cmd>norm! K<cr>", { desc = "Keywordprg" })
 
--- Lazy plugin manager
-map("n", "<leader>l", "<cmd>Lazy<cr>", { desc = "Lazy" })
-
 -- Quit/save shortcuts
 map("n", "<leader>qq", "<cmd>confirm qa<cr>", { desc = "Quit all" })
 map("n", "<leader>ww", "<cmd>w<cr>", { desc = "Save" })
