@@ -1,11 +1,11 @@
 ---
 name: done
-description: "Wrap up a Claude Code session by summarizing key decisions, questions, and follow-ups into a markdown report saved to the Obsidian inbox. Use this skill whenever the user says /done, wants to wrap up, end a session, save a session summary, or log what was accomplished. Also trigger when the user asks to capture session notes, write a debrief, or save progress."
+description: "Wrap up a Claude Code session by summarizing key decisions, questions, and follow-ups into a markdown report saved to the project root. Use this skill whenever the user says /done, wants to wrap up, end a session, save a session summary, or log what was accomplished. Also trigger when the user asks to capture session notes, write a debrief, or save progress."
 ---
 
 # Done — Session Wrap-Up
 
-When invoked, produce a structured summary of the current conversation and save it as a markdown file in the Obsidian daily-notes inbox.
+When invoked, produce a structured summary of the current conversation and save it as a markdown file.
 
 ## Steps
 
@@ -43,8 +43,7 @@ Be concise but complete. Capture the essence of the session — someone reading 
 
 Determine the save location:
 
-1. **Obsidian daily-notes inbox**: check if `~/Documents/daily-notes/00 Inbox/` exists. If it does, save there.
-2. **Project root fallback**: if the inbox doesn't exist, save in the current working directory (project root).
+- if the user explicitly asks for a save location save it there otherwise save it to the project root.
 
 Use this naming pattern:
 
@@ -81,10 +80,11 @@ project:: `<working-directory-basename>`
 - [ ] <actionable next steps as tasks>
 ```
 
-The `session::`, `branch::`, `date::`, and `project::` lines use Obsidian inline fields (Dataview syntax) so they're queryable.
+The `session::`, `branch::`, `date::`, and `project::` lines use inline fields (Dataview syntax) so they're queryable.
 
 ### 4. Confirm
 
 After writing the file, tell the user:
+
 - The file path
 - A brief one-liner of what was captured
