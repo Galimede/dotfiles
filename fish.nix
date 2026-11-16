@@ -43,6 +43,8 @@
       grs = "git restore";
       gst = "git status";
       gsw = "git switch";
+      # Claude
+      ch = "claude --model haiku";
     };
   };
 
