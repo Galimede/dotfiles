@@ -10,6 +10,13 @@
     };
 
     settings = {
+      # Disable config auto-reload (kitty 0.47.x). On NixOS/home-manager the
+      # config watcher recursively inotify-watches the dirs of all included
+      # files, including /nix/store, exhausting fs.inotify.max_user_watches and
+      # breaking other watchers (vite/chokidar HMR). Workaround until the fix
+      # lands upstream. See kovidgoyal/kitty#10102.
+      auto_reload_config = -1;
+
       # Tab bar
       tab_bar_min_tabs = 1;
       tab_bar_edge = "bottom";
