@@ -20,26 +20,25 @@ Arch Linux handles the base system, kernel, and GPU drivers. Nix + Home Manager 
 
 ## Modules
 
-| Module | What it configures |
-|---|---|
-| `fish.nix` | Fish shell, aliases, custom functions |
-| `starship.nix` | Starship prompt |
-| `kitty.nix` | Kitty terminal (nixGL-wrapped) |
-| `neovim.nix` | Neovim (plugins, LSP servers, formatters via Nix) |
-| `zed.nix` | Zed editor (nixGL-wrapped) |
-| `zen.nix` | Zen Browser |
-| `niri.nix` | Niri window manager dotfiles |
-| `git.nix` | Shared Git config |
-| `git-local.nix` | Personal Git identity (gitignored, see template) |
-| `lazygit.nix` | Lazygit TUI |
-| `fzf.nix` | Fuzzy finder |
-| `mise.nix` | Runtime version manager |
-| `fonts.nix` | Fonts (Dank Mono, Hack Nerd Font, Noto Color Emoji) + fontconfig |
-| `claude.nix` | Claude Code settings and skills |
-| `yazi.nix` | Yazi file manager and keybindings |
-| `qutebrowser.nix` | Qutebrowser (nixGL-wrapped) |
-| `1password.nix` | 1Password desktop entry override (XWayland fix for niri) |
-| `codium.nix` | VS Codium editor |
+| Module            | What it configures                                               |
+| ----------------- | ---------------------------------------------------------------- |
+| `fish.nix`        | Fish shell, aliases, custom functions                            |
+| `starship.nix`    | Starship prompt                                                  |
+| `kitty.nix`       | Kitty terminal (nixGL-wrapped)                                   |
+| `neovim.nix`      | Neovim (plugins, LSP servers, formatters via Nix)                |
+| `zed.nix`         | Zed editor (nixGL-wrapped)                                       |
+| `zen.nix`         | Zen Browser                                                      |
+| `niri.nix`        | Niri window manager dotfiles                                     |
+| `git.nix`         | Shared Git config                                                |
+| `git-local.nix`   | Personal Git identity (gitignored, see template)                 |
+| `fzf.nix`         | Fuzzy finder                                                     |
+| `mise.nix`        | Runtime version manager                                          |
+| `fonts.nix`       | Fonts (Dank Mono, Hack Nerd Font, Noto Color Emoji) + fontconfig |
+| `claude.nix`      | Claude Code settings and skills                                  |
+| `yazi.nix`        | Yazi file manager and keybindings                                |
+| `qutebrowser.nix` | Qutebrowser (nixGL-wrapped)                                      |
+| `1password.nix`   | 1Password desktop entry override (XWayland fix for niri)         |
+| `codium.nix`      | VS Codium editor                                                 |
 
 ## Dotfiles
 
