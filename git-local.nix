@@ -11,7 +11,7 @@
     # Directory-specific identities
     includes = [
       {
-        condition = "gitdir:~/dev/clever-cloud/gitlab/";
+        condition = "gitdir:~/dev/projects/gitlab/";
         contents = {
           commit.gpgsign = true;
           user = {
@@ -22,7 +22,7 @@
         };
       }
       {
-        condition = "gitdir:~/projects/github/";
+        condition = "gitdir:~/dev/projects/github/";
         contents = {
           commit.gpgsign = true;
           user.signingkey = "ssh-ed25519 AAAAC3NzaC1lZDI1NTE5AAAAIE0xK4IZkhIz55po+dF57e9Sx/FLnqWR0O8GxwjZX0z1";
@@ -31,6 +31,7 @@
       {
         condition = "gitdir:~/Documents/frontend-team/";
         contents = {
+          commit.gpgsign = true;
           user = {
             name = "mdegand";
             email = "mathieu.degand@clever.cloud";
