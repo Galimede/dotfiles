@@ -1,7 +1,7 @@
-{ config, pkgs, lib, nixgl, zen-browser, private-fonts, ... }:
+{ config, pkgs, lib, zen-browser, private-fonts, ... }:
 
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLIntel;
+  nixGLPkg = pkgs.nixgl.nixGLIntel;
   clever-switch-profile = pkgs.callPackage ./clever-switch-profile.nix {};
   random-labels = pkgs.callPackage ./random-labels.nix {};
 in {

@@ -1,7 +1,7 @@
-{ pkgs, nixgl, ... }:
+{ pkgs, ... }:
 
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLIntel;
+  nixGLPkg = pkgs.nixgl.nixGLIntel;
 in {
   programs.qutebrowser = {
     enable = true;

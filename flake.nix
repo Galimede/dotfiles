@@ -34,6 +34,16 @@
       ];
       overlays = [
         nur.overlays.default
+        nixgl.overlays.default
+        # nixGL still calls pcregrep in its checkPhase, but pcre was removed
+        # from nixpkgs. Shim it with pcre2grep (same flags for this use).
+        # Drop once nix-community/nixGL#227 is merged.
+        (final: prev: {
+          pcre = final.runCommand "pcregrep-shim" { } ''
+            mkdir -p $out/bin
+            ln -s ${final.pcre2.bin}/bin/pcre2grep $out/bin/pcregrep
+          '';
+        })
         (final: prev: let
           # Create a symlink of electron named "obsidian" so the CLI
           # process name check (electron !== obsidian) passes.
@@ -54,7 +64,7 @@
   in {
     homeConfigurations."mdegand" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit nixgl zen-browser private-fonts; };
+      extraSpecialArgs = { inherit zen-browser private-fonts; };
       modules = [ ./home.nix ];
     };
 

@@ -1,7 +1,7 @@
-{ pkgs, config, nixgl, ... }:
+{ pkgs, config, ... }:
 
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLIntel;
+  nixGLPkg = pkgs.nixgl.nixGLIntel;
 in {
   programs.vscode = {
     enable = true;

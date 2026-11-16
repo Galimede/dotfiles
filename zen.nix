@@ -1,7 +1,7 @@
-{ pkgs, nixgl, zen-browser, ... }:
+{ pkgs, zen-browser, ... }:
 
 let
-  nixGLPkg = nixgl.packages.${pkgs.system}.nixGLIntel;
+  nixGLPkg = pkgs.nixgl.nixGLIntel;
   firefox-addons = pkgs.nur.repos.rycee.firefox-addons;
 in {
   # Import the zen-browser home-manager module

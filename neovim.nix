@@ -3,7 +3,7 @@ let
   lspServers = with pkgs; [
     vtsls
     vscode-langservers-extracted # eslint, html, json, css
-    stylelint-lsp
+    # stylelint-lsp disabled: nixpkgs depends on pnpm_9, marked insecure (CVE-2026-48995 & others)
     nil
     lua-language-server
     bash-language-server
@@ -12,7 +12,7 @@ let
   formatters = with pkgs; [
     stylua
     prettierd
-    nixfmt-rfc-style
+    pkgs.nixfmt
   ];
   plugins = with pkgs.vimPlugins; [
     # Core

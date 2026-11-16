@@ -2,7 +2,7 @@
 
 {
   home.packages = [
-    private-fonts.packages.${pkgs.system}.dank-mono
+    private-fonts.packages.${pkgs.stdenv.hostPlatform.system}.dank-mono
     pkgs.noto-fonts              # Latin, Cyrillic, Greek, Arabic, Hebrew, Thai, etc.
     pkgs.noto-fonts-cjk-sans     # Chinese, Japanese, Korean
     pkgs.noto-fonts-color-emoji  # Emoji support (browsers, Obsidian, etc.)
