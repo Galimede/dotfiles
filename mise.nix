@@ -10,7 +10,7 @@
     globalConfig = {
       tools = {
         node = "lts";
-        "npm:@playwright/cli" = "0.1.0";
+        "npm:@playwright/cli" = "0.1.23";
         "npm:ctx7" = "latest";
       };
     };

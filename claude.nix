@@ -1,4 +1,4 @@
-{ pkgs, lib, zen-browser, ... }:
+{ pkgs, lib, ... }:
 
 let
   # Nix-managed baseline, merged into ~/.claude/settings.json on activation so
@@ -7,6 +7,10 @@ let
     builtins.toJSON {
       env = {
         ENABLE_LSP_TOOL = "1";
+        # playwright-cli: use the flake's Chromium (tracks nixpkgs updates)
+        # with Chromium's sandbox on (off by default on Linux otherwise).
+        PLAYWRIGHT_MCP_EXECUTABLE_PATH = "${pkgs.chromium}/bin/chromium";
+        PLAYWRIGHT_MCP_SANDBOX = "1";
       };
       includeCoAuthoredBy = false;
       outputStyle = "Concise";
@@ -180,10 +184,11 @@ in
     ```
     touch ~/.cache/ms-playwright/firefox-*/firefox/lock ~/.cache/ms-playwright/chromium-*/chrome-linux64/lock 2>/dev/null
     ```
-    For Chromium: prefix commands with `PLAYWRIGHT_CHROMIUM_EXECUTABLE_PATH=${pkgs.chromium}/bin/chromium`.
-    For Zen browser: prefix with `PLAYWRIGHT_FIREFOX_EXECUTABLE_PATH=${
-      zen-browser.packages.${pkgs.system}.default
-    }/bin/zen` and pass `--browser=firefox`.
+    For Chromium (default): nothing to do. `PLAYWRIGHT_MCP_EXECUTABLE_PATH` (Nix Chromium) and `PLAYWRIGHT_MCP_SANDBOX=1` are set in Claude Code's env. Do not override them and do not pass `--no-sandbox`.
+    For a Firefox engine: run `playwright-cli install-browser firefox` once, then run `env -u PLAYWRIGHT_MCP_EXECUTABLE_PATH playwright-cli open --browser=firefox` (otherwise it launches Chromium with Firefox arguments and hangs). It uses Playwright's patched Firefox.
+    Zen cannot be automated: with `--browser=firefox` it exits at launch (no Juggler), and with `--browser=moz-firefox` (WebDriver BiDi) every command fails with `openWindow() not supported in Zen`. Use Chromium or Playwright's Firefox instead.
+
+    **NEVER point `--profile` (or `--persistent`) at `~/.config/zen/default`, `~/.mozilla/firefox/*`, or any other browser profile actually used for daily browsing.** Playwright writes automation prefs into the user-data-dir (e.g. `focusmanager.testmode=true`), which persists in `prefs.js` and breaks normal usage — most visibly, dead-key accents (`ô`, `é`, …) stop working in the browser UI. If a session needs persistence, use a dedicated path like `~/.cache/playwright-cli-profiles/<name>`. The default (no `--persistent`) uses an isolated in-memory profile, which is the safe choice for one-off automation.
   '';
 
   home.file.".claude/skills".source = ./dotfiles/claude/skills;
