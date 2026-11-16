@@ -10,6 +10,7 @@ in {
     ./starship.nix
     ./kitty.nix
     ./niri.nix
+    ./noctalia.nix
     ./zen.nix
     ./1password.nix
     ./git.nix

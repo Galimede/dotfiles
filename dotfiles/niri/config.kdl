@@ -169,7 +169,7 @@ layout {
     }
 }
 layer-rule {
-    // noctalia-qs registers layers as "noctalia-*" (e.g. noctalia-bar-content-DP-1)
+    // noctalia registers layers as "noctalia-*" (e.g. noctalia-bar-content-DP-1)
     match namespace="^noctalia-"
     place-within-backdrop true
 }
@@ -177,6 +177,11 @@ overview {
     workspace-shadow {
         off
     }
+}
+
+debug {
+    // Allows Noctalia notification actions and window activation.
+    honor-xdg-activation-with-invalid-serial
 }
 
 // Add lines like this to spawn processes at startup.
@@ -187,9 +192,8 @@ overview {
 // This line starts waybar, a commonly used bar for Wayland compositors.
 //spawn-at-startup "waybar"
 
-// To run a shell command (with variables, pipes, etc.), use spawn-sh-at-startup:
-// NOTE: upstream docs say "noctalia-qs" but the Arch AUR package installs the binary as "qs"
-spawn-sh-at-startup "qs -c noctalia-shell"
+// noctalia is started as a systemd user service (see noctalia.nix) so it
+// restarts on failure instead of dying silently on an early startup race.
 spawn-at-startup "~/.config/niri/monitor-layout.sh"
 
 hotkey-overlay {
@@ -272,6 +276,14 @@ window-rule {
     block-out-from "screen-capture"
 }
 
+// Noctalia's settings window: floating, per upstream niri setup docs.
+window-rule {
+    match app-id="dev.noctalia.Noctalia"
+    open-floating true
+    default-column-width { fixed 1080; }
+    default-window-height { fixed 920; }
+}
+
 // Rounded corners for all windows.
 window-rule {
     geometry-corner-radius 12
@@ -293,68 +305,68 @@ binds {
     // === Application Launchers ===
     Mod+T hotkey-overlay-title="Open Terminal" { spawn "nixGLIntel" "kitty"; }
     Mod+Space hotkey-overlay-title="Application Launcher" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "toggle";
+        spawn "noctalia" "msg" "panel-toggle" "launcher";
     }
     Ctrl+Space hotkey-overlay-title="Speech to Text" { spawn "fish" "-c" "handy-toggle"; }
     Mod+V hotkey-overlay-title="Clipboard Manager" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "launcher" "clipboard";
+        spawn "noctalia" "msg" "panel-toggle" "clipboard";
     }
     Mod+M hotkey-overlay-title="System Monitor" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "systemMonitor" "toggle";
+        spawn "noctalia" "msg" "panel-toggle" "control-center" "system";
     }
     Mod+Comma hotkey-overlay-title="Settings" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "settings" "toggle";
+        spawn "noctalia" "msg" "settings-toggle";
     }
     Mod+Y hotkey-overlay-title="Random Wallpaper" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "wallpaper" "random";
+        spawn "noctalia" "msg" "wallpaper-random";
     }
     Mod+N hotkey-overlay-title="Notification Center" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "notifications" "toggleHistory";
+        spawn "noctalia" "msg" "panel-toggle" "control-center" "notifications";
     }
 
     // === Security ===
     Mod+Alt+L hotkey-overlay-title="Lock Screen" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "lockScreen" "lock";
+        spawn "noctalia" "msg" "session" "lock";
     }
     Mod+Shift+E { quit; }
     Ctrl+Alt+Delete hotkey-overlay-title="System Monitor" {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "systemMonitor" "toggle";
+        spawn "noctalia" "msg" "panel-toggle" "control-center" "system";
     }
 
     // === Audio Controls ===
     XF86AudioRaiseVolume allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "increase";
+        spawn "noctalia" "msg" "volume-up";
     }
     XF86AudioLowerVolume allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "decrease";
+        spawn "noctalia" "msg" "volume-down";
     }
     XF86AudioMute allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "muteOutput";
+        spawn "noctalia" "msg" "volume-mute";
     }
     XF86AudioMicMute allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "volume" "muteInput";
+        spawn "noctalia" "msg" "mic-mute";
     }
 
     // === Media Controls ===
     XF86AudioPlay allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "playPause";
+        spawn "noctalia" "msg" "media" "toggle";
     }
     XF86AudioStop allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "pause";
+        spawn "noctalia" "msg" "media" "pause";
     }
     XF86AudioPrev allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "previous";
+        spawn "noctalia" "msg" "media" "previous";
     }
     XF86AudioNext allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "media" "next";
+        spawn "noctalia" "msg" "media" "next";
     }
 
     // === Brightness Controls ===
     XF86MonBrightnessUp allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "increase";
+        spawn "noctalia" "msg" "brightness-up";
     }
     XF86MonBrightnessDown allow-when-locked=true {
-        spawn "qs" "-c" "noctalia-shell" "ipc" "call" "brightness" "decrease";
+        spawn "noctalia" "msg" "brightness-down";
     }
 
     // === Window Management ===

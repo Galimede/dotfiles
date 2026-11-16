@@ -28,9 +28,13 @@
     # nixpkgs-unstable revision has dropped support for. Its own locked
     # nixpkgs avoids that break.
     hunk.url = "github:modem-dev/hunk";
+    noctalia = {
+      url = "github:noctalia-dev/noctalia";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, hunk, ... }: let
+  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, hunk, noctalia, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -69,7 +73,7 @@
   in {
     homeConfigurations."mdegand" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit zen-browser private-fonts hunk; };
+      extraSpecialArgs = { inherit zen-browser private-fonts hunk noctalia; };
       modules = [ ./home.nix ];
     };
 
