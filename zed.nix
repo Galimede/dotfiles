@@ -243,10 +243,13 @@ in {
 
   # Wrapper script with GPU acceleration (OpenGL + Vulkan for Intel Arc)
   # This replaces the default zeditor command in ~/.local/bin (which has priority in PATH)
+  # Note: LD_LIBRARY_PATH must NOT include /usr/lib here — nixGLIntel and other nix-store
+  # binaries in this exec chain use RUNPATH, so LD_LIBRARY_PATH would override it and make
+  # them load the system glibc instead of their pinned nix glibc, crashing on ABI mismatch
+  # after any system glibc update. /usr/lib is already in the default ld.so.cache search
+  # path, so the Vulkan ICD (VK_ICD_FILENAMES) is found without it.
   home.file.".local/bin/zeditor".text = ''
     #!/bin/sh
-    # Use system Vulkan loader and ICD for Intel Arc GPU
-    export LD_LIBRARY_PATH=/usr/lib''${LD_LIBRARY_PATH:+:$LD_LIBRARY_PATH}
     export VK_ICD_FILENAMES=/usr/share/vulkan/icd.d/intel_icd.json
     exec ${nixGLPkg}/bin/nixGLIntel ${pkgs.zed-editor}/bin/zeditor "$@"
   '';
