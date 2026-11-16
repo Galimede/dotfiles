@@ -12,6 +12,7 @@
         node = "lts";
         "npm:@playwright/cli" = "0.1.23";
         "npm:ctx7" = "latest";
+        "npm:slack-mcp-server" = "latest";
       };
     };
   };
