@@ -24,6 +24,7 @@ in {
     ./codium.nix
     ./qutebrowser.nix
     ./yazi.nix
+    ./hunk.nix
   ];
 
   home.username = "mdegand";

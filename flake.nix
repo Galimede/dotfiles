@@ -23,9 +23,14 @@
       url = "git+ssh://git@github.com/Galimede/private-fonts";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # Not following our nixpkgs here: hunk's transitive bun2nix input uses
+    # flake-parts across all systems (incl. x86_64-darwin), which our pinned
+    # nixpkgs-unstable revision has dropped support for. Its own locked
+    # nixpkgs avoids that break.
+    hunk.url = "github:modem-dev/hunk";
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, ... }: let
+  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, hunk, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -64,7 +69,7 @@
   in {
     homeConfigurations."mdegand" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit zen-browser private-fonts; };
+      extraSpecialArgs = { inherit zen-browser private-fonts hunk; };
       modules = [ ./home.nix ];
     };
 
