@@ -8,6 +8,7 @@
       ".claude/settings.local.json"
       ".nvim.lua"
       ".playwright-cli"
+      ".reviews"
     ];
     settings = {
       push.autoSetupRemote = true;
