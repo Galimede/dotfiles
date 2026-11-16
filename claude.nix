@@ -118,8 +118,62 @@ in
     This global CLAUDE.md is managed by home-manager via `claude.nix`. To modify it, edit the `home.file.".claude/CLAUDE.md".text` block in `~/.config/home-manager/claude.nix`, not `~/.claude/CLAUDE.md` directly.
     Nix flakes only see git-tracked files. Always `git add` new or modified files before running `home-manager switch`, otherwise they will be silently ignored.
 
-    ## Workflow Rules
-    Before editing code, read and understand the full context first. Check related files, existing patterns, and architecture specs before making any changes. Never start editing after seeing only part of the picture.
+    ## Core Principles
+    - **Simplicity First**: Make every change as simple as possible. Impact minimal code.
+    - **No Laziness**: Find root causes. No temporary fixes. Senior developer standards.
+    - **Minimal Impact**: Changes should only touch what's necessary. Avoid introducing bugs.
+
+    ## Workflow Orchestration
+
+    ### Plan Mode Default
+    - Enter plan mode for ANY non-trivial task (3+ steps or architectural decisions).
+    - If something goes sideways, STOP and re-plan immediately — don't keep pushing.
+    - Write detailed specs upfront to reduce ambiguity.
+    - Before editing code, read and understand the full context first. Check related files, existing patterns, and architecture specs before making any changes.
+
+    ### Autonomous Bug Fixing
+    - When given a clear bug report with an obvious fix: just fix it. Don't ask for hand-holding.
+    - Point at logs, errors, failing tests — then resolve them.
+    - For non-trivial tasks or ideas, present your understanding and proposed approach first. Only start writing code when the user explicitly asks to proceed.
+
+    ### Subagent Strategy
+    - Use subagents liberally to keep main context window clean.
+    - Offload research, exploration, and parallel analysis to subagents.
+    - One task per subagent for focused execution.
+    - When working in parallel, only one agent should edit a given file at a time.
+
+    ## Task Management
+    1. **Plan First**: Write plan with checkable items.
+    2. **Verify Plan**: Check in before starting implementation.
+    3. **Track Progress**: Mark items complete as you go.
+    4. **Explain Changes**: High-level summary at each step.
+    5. **Document Results**: Add review section when done.
+
+    ## Execution Rules
+    When asked to implement a plan or refactoring, execute ALL steps completely. Do not stop partway through to re-plan, audit, or summarize. If something is unclear, ask once then proceed with implementation.
+
+    ## Code Quality
+    - For non-trivial changes, pause and ask "is there a more elegant way?" — but skip this for simple, obvious fixes.
+    - If a fix feels hacky, implement the elegant solution instead.
+    - Challenge your own work before presenting it.
+
+    ## Quality Checks
+    - When fixing bugs or implementing changes from a list, verify each item is actually resolved before reporting completion. Cross-reference the original list item-by-item.
+    - Never mark a task complete without proving it works.
+    - Ask yourself: "Would a staff engineer approve this?"
+
+    ## Self-Improvement
+    After ANY correction from the user, save a feedback memory that includes:
+    - The mistake pattern (what went wrong)
+    - The prevention rule (how to avoid it next time)
+    - Why it matters
+    Review relevant feedback memories at session start.
+
+    ## Output Format
+    When user asks for a single consolidated output (report, summary, etc.), produce ONE file/artifact. Do not split into multiple separate outputs unless explicitly asked.
+
+    ## Style
+    Never use the em dash (—) or en dash (–), in any language, any output (chat, code, commits, docs, messages to third parties). Use a comma, a period, parentheses, or rephrase instead.
 
     ## playwright-cli
     Before the first `playwright-cli open` of a session, create missing lock files that Playwright requires:
