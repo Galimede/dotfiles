@@ -1,0 +1,55 @@
+onboarding = false
+
+[theme]
+name = "catppuccin"
+
+[ui.toast]
+delivery = "system"
+
+[keys]
+# Replaces kitty's ctrl+shift+up/down (previous_window/next_window)
+cycle_pane_previous = "ctrl+shift+up"   # was prefix+shift+tab
+cycle_pane_next = "ctrl+shift+down"     # was prefix+tab
+
+# Direct (prefix-free) shortcuts. The prefix versions keep working as fallback:
+# the previous defaults are noted in the trailing comments.
+
+# Panes
+focus_pane_left = "ctrl+alt+h"   # was prefix+h
+focus_pane_down = "ctrl+alt+j"   # was prefix+j
+focus_pane_up = "ctrl+alt+k"     # was prefix+k
+focus_pane_right = "ctrl+alt+l"  # was prefix+l
+split_vertical = "ctrl+alt+v"    # was prefix+v
+split_horizontal = "ctrl+alt+s"  # was prefix+minus
+close_pane = "ctrl+alt+x"        # was prefix+x
+zoom = "ctrl+alt+z"              # was prefix+z
+
+# Tabs
+new_tab = "ctrl+alt+t"           # was prefix+c
+previous_tab = "ctrl+alt+left"   # was prefix+p
+next_tab = "ctrl+alt+right"      # was prefix+n
+switch_tab = "ctrl+alt+1..9"     # was prefix+1..9
+
+# Workspaces
+previous_workspace = "ctrl+alt+up"
+next_workspace = "ctrl+alt+down"
+new_workspace = "ctrl+alt+n"          # was prefix+shift+n
+workspace_picker = "ctrl+alt+w"       # was prefix+w
+switch_workspace = "ctrl+alt+shift+1..9"
+
+# Replaces kitty's ctrl+shift+e / ctrl+shift+d (kitty keeps ctrl+shift+e for its URL hints)
+[[keys.command]]
+key = "ctrl+alt+e"
+type = "pane"
+command = "sh -c 'cd \"$HERDR_ACTIVE_PANE_CWD\" && nvim'"
+
+[[keys.command]]
+key = "ctrl+alt+d"
+type = "pane"
+command = "sh -c 'cd \"$HERDR_ACTIVE_PANE_CWD\" && nvim -c CodeDiff'"
+
+# Move the current pane out of its split into its own tab
+[[keys.command]]
+key = "ctrl+alt+b"
+type = "shell"
+command = "herdr pane move $HERDR_ACTIVE_PANE_ID --new-tab --focus"

@@ -77,6 +77,7 @@ in {
     gh                # GitHub CLI
     glab              # GitLab CLI
     chromium          # Browser for playwright-cli
+    herdr             # Agent multiplexer for the terminal
   ];
 
 
