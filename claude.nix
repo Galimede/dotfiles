@@ -1,5 +1,114 @@
-{ pkgs, zen-browser, ... }:
+{ pkgs, lib, zen-browser, ... }:
 
+let
+  # Nix-managed baseline, merged into ~/.claude/settings.json on activation so
+  # Claude Code can still write to it (/model, /effort, ...).
+  claudeSettings = pkgs.writeText "claude-settings.json" (
+    builtins.toJSON {
+      env = {
+        ENABLE_LSP_TOOL = "1";
+      };
+      includeCoAuthoredBy = false;
+      outputStyle = "Concise";
+      statusLine = {
+        type = "command";
+        command = "${pkgs.nodejs}/bin/node ~/.claude/statusline.js";
+      };
+      permissions = {
+        allow = [
+          "Fetch"
+          "WebFetch"
+          "WebSearch"
+          "Bash(ctx7:*)"
+          "Bash(awk:*)"
+          "Bash(diff:*)"
+          "Bash(du:*)"
+          "Bash(fd:*)"
+          "Bash(file:*)"
+          "Bash(find:*)"
+          "Bash(head:*)"
+          "Bash(jq:*)"
+          "Bash(ls:*)"
+          "Bash(mkdir:*)"
+          "Bash(grep:*)"
+          "Bash(rg:*)"
+          "Bash(stat:*)"
+          "Bash(tail:*)"
+          "Bash(wc:*)"
+          "Bash(which:*)"
+          "Bash(git add:*)"
+          "Bash(git blame:*)"
+          "Bash(git branch:*)"
+          "Bash(git cat-file:*)"
+          "Bash(git checkout:*)"
+          "Bash(git describe:*)"
+          "Bash(git diff:*)"
+          "Bash(git fetch:*)"
+          "Bash(git for-each-ref:*)"
+          "Bash(git grep:*)"
+          "Bash(git filter-branch:*)"
+          "Bash(git log:*)"
+          "Bash(git ls-files:*)"
+          "Bash(git merge-base:*)"
+          "Bash(git remote -v:*)"
+          "Bash(git rev-parse:*)"
+          "Bash(git show:*)"
+          "Bash(git stash list:*)"
+          "Bash(git status:*)"
+          "Bash(git tag -l:*)"
+          "Bash(git tag --sort:*)"
+          "Bash(git worktree list:*)"
+          "Bash(gh issue list:*)"
+          "Bash(gh issue status:*)"
+          "Bash(gh issue view:*)"
+          "Bash(gh pr checks:*)"
+          "Bash(gh pr diff:*)"
+          "Bash(gh pr list:*)"
+          "Bash(gh pr status:*)"
+          "Bash(gh pr view:*)"
+          "Bash(gh release list:*)"
+          "Bash(gh release view:*)"
+          "Bash(gh repo view:*)"
+          "Bash(gh run list:*)"
+          "Bash(gh run view:*)"
+          "Bash(gh search:*)"
+          "Bash(glab ci list:*)"
+          "Bash(glab ci status:*)"
+          "Bash(glab ci trace:*)"
+          "Bash(glab issue create:*)"
+          "Bash(glab issue list:*)"
+          "Bash(glab issue update:*)"
+          "Bash(glab issue view:*)"
+          "Bash(glab label list:*)"
+          "Bash(glab mr create:*)"
+          "Bash(glab mr diff:*)"
+          "Bash(glab mr issues:*)"
+          "Bash(glab mr list:*)"
+          "Bash(glab mr update:*)"
+          "Bash(glab mr view:*)"
+          "Bash(glab release list:*)"
+          "Bash(glab release view:*)"
+          "Bash(glab repo view:*)"
+          "Bash(npm info:*)"
+          "Bash(npm install:*)"
+          "Bash(npm run build:*)"
+          "Bash(npm run lint:*)"
+          "Bash(npm search:*)"
+          "Bash(node --check:*)"
+          "Bash(playwright-cli:*)"
+          "Read(~/.config/home-manager/**)"
+        ];
+        deny = [
+          "Read(.env*)"
+          "Bash(gh auth:*)"
+          "Bash(glab auth:*)"
+          "Read(~/.config/gh/**)"
+          "Read(~/.config/glab-cli/**)"
+        ];
+      };
+    }
+  );
+in
 {
   home.file.".claude/CLAUDE.md".text = ''
     # Global Claude Code instructions
@@ -29,80 +138,21 @@
   home.file.".agents/skills".source = ./dotfiles/claude/skills;
   home.file.".agents/skills".recursive = true;
 
+  home.file.".claude/output-styles".source = ./dotfiles/claude/output-styles;
+  home.file.".claude/output-styles".recursive = true;
+
   home.file.".claude/statusline.js".source = ./dotfiles/claude/statusline.js;
 
-  home.file.".claude/settings.json".text = builtins.toJSON {
-    env = {
-      ENABLE_LSP_TOOL = "1";
-    };
-    includeCoAuthoredBy = false;
-    statusLine = {
-      type = "command";
-      command = "${pkgs.nodejs}/bin/node ~/.claude/statusline.js";
-    };
-    permissions = {
-      allow = [
-        "Fetch"
-        "WebFetch"
-        "WebSearch"
-        "Bash(ctx7:*)"
-        "Bash(awk:*)"
-        "Bash(cat:*)"
-        "Bash(curl:*)"
-        "Bash(diff:*)"
-        "Bash(du:*)"
-        "Bash(fd:*)"
-        "Bash(file:*)"
-        "Bash(find:*)"
-        "Bash(head:*)"
-        "Bash(jq:*)"
-        "Bash(ls:*)"
-        "Bash(mkdir:*)"
-        "Bash(grep:*)"
-        "Bash(rg:*)"
-        "Bash(sed:*)"
-        "Bash(stat:*)"
-        "Bash(tail:*)"
-        "Bash(wc:*)"
-        "Bash(which:*)"
-        "Bash(git add:*)"
-        "Bash(git branch:*)"
-        "Bash(git checkout:*)"
-        "Bash(git describe:*)"
-        "Bash(git diff:*)"
-        "Bash(git fetch:*)"
-        "Bash(git for-each-ref:*)"
-        "Bash(git filter-branch:*)"
-        "Bash(git log:*)"
-        "Bash(git rev-parse:*)"
-        "Bash(git show:*)"
-        "Bash(git status:*)"
-        "Bash(git tag -l:*)"
-        "Bash(git tag --sort:*)"
-        "Bash(gh issue list:*)"
-        "Bash(gh issue status:*)"
-        "Bash(gh issue view:*)"
-        "Bash(gh pr diff:*)"
-        "Bash(gh pr list:*)"
-        "Bash(gh pr status:*)"
-        "Bash(gh pr view:*)"
-        "Bash(gh search:*)"
-        "Bash(glab issue list:*)"
-        "Bash(glab issue view:*)"
-        "Bash(glab mr list:*)"
-        "Bash(glab mr view:*)"
-        "Bash(npm info:*)"
-        "Bash(npm install:*)"
-        "Bash(npm run build:*)"
-        "Bash(npm run lint:*)"
-        "Bash(npm search:*)"
-        "Bash(node --check:*)"
-        "Bash(playwright-cli:*)"
-        "Read(~/.config/home-manager/**)"
-      ];
-      deny = [
-        "Read(.env*)"
-      ];
-    };
-  };
+  home.activation.claudeSettings = lib.hm.dag.entryAfter [ "linkGeneration" ] ''
+    f="$HOME/.claude/settings.json"
+    mkdir -p "$HOME/.claude"
+    if [ -L "$f" ] || [ ! -e "$f" ]; then
+      rm -f "$f"
+      echo '{}' > "$f"
+    fi
+    tmp="$(mktemp)"
+    ${pkgs.jq}/bin/jq -s '.[0] * .[1]' "$f" ${claudeSettings} > "$tmp"
+    install -m 644 "$tmp" "$f"
+    rm -f "$tmp"
+  '';
 }
