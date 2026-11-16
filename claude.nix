@@ -14,16 +14,6 @@ let
       };
       includeCoAuthoredBy = false;
       outputStyle = "Concise";
-      hooks.SessionStart = [
-        {
-          hooks = [
-            {
-              type = "command";
-              command = "~/.claude/hooks/herdr-agent-state.sh session";
-            }
-          ];
-        }
-      ];
       statusLine = {
         type = "command";
         command = "${pkgs.nodejs}/bin/node ~/.claude/statusline.js";

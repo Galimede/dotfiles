@@ -1,18 +1,8 @@
 { pkgs, ... }:
 
-let
-  # Start herdr in the first kitty window. Detaching (prefix+q) closes kitty.
-  herdrSession = pkgs.writeText "kitty-herdr.session" ''
-    launch ${pkgs.herdr}/bin/herdr
-  '';
-in
 {
   programs.kitty = {
     enable = true;
-
-    extraConfig = ''
-      startup_session ${herdrSession}
-    '';
 
     font = {
       name = "Hack Nerd Font";
@@ -83,16 +73,11 @@ in
       color15 = "#A6ADC8";
     };
 
-    # Window/tab navigation now lives in herdr (see ~/.config/herdr/config.toml).
-    # Previous kitty bindings, kept as fallback:
-    # keybindings = {
-    #   "ctrl+shift+up" = "previous_window";
-    #   "ctrl+shift+down" = "next_window";
-    #   "ctrl+shift+e" = "launch --type=tab --cwd=current nvim";
-    #   "ctrl+shift+d" = "launch --type=tab --cwd=current nvim -c CodeDiff";
-    # };
+    keybindings = {
+      "ctrl+shift+up" = "previous_window";
+      "ctrl+shift+down" = "next_window";
+      "ctrl+shift+e" = "launch --type=tab --cwd=current nvim";
+      "ctrl+shift+d" = "launch --type=tab --cwd=current nvim -c CodeDiff";
+    };
   };
-
-  # herdr TUI keybindings and custom commands.
-  xdg.configFile."herdr/config.toml".source = ./dotfiles/herdr/config.toml;
 }
