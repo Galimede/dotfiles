@@ -85,6 +85,29 @@
         "type": "github"
       }
     },
+    "hex": {
+      "inputs": {
+        "home-manager": [
+          "home-manager"
+        ],
+        "nixpkgs": [
+          "nixpkgs"
+        ]
+      },
+      "locked": {
+        "lastModified": 1794913330,
+        "narHash": "sha256-DMp1jRS3+XFIIqpiH3wIfa4pApcZ/CZrtAQ5jwAjFTQ=",
+        "owner": "anomalyco",
+        "repo": "hex",
+        "rev": "94cbe2473331111c1e21d5a2566d3433785acf2e",
+        "type": "github"
+      },
+      "original": {
+        "owner": "anomalyco",
+        "repo": "hex",
+        "type": "github"
+      }
+    },
     "home-manager": {
       "inputs": {
         "nixpkgs": [
@@ -292,6 +315,7 @@
     },
     "root": {
       "inputs": {
+        "hex": "hex",
         "home-manager": "home-manager",
         "hunk": "hunk",
         "nixgl": "nixgl",

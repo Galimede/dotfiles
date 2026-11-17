@@ -26,6 +26,7 @@ in {
     ./qutebrowser.nix
     ./yazi.nix
     ./hunk.nix
+    ./hex.nix
   ];
 
   home.username = "mdegand";

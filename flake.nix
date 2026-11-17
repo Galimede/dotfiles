@@ -32,9 +32,14 @@
       url = "github:noctalia-dev/noctalia";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    hex = {
+      url = "github:anomalyco/hex";
+      inputs.nixpkgs.follows = "nixpkgs";
+      inputs.home-manager.follows = "home-manager";
+    };
   };
 
-  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, hunk, noctalia, ... }: let
+  outputs = { nixpkgs, home-manager, nixgl, zen-browser, nur, private-fonts, hunk, noctalia, hex, ... }: let
     system = "x86_64-linux";
     pkgs = import nixpkgs {
       inherit system;
@@ -73,7 +78,7 @@
   in {
     homeConfigurations."mdegand" = home-manager.lib.homeManagerConfiguration {
       inherit pkgs;
-      extraSpecialArgs = { inherit zen-browser private-fonts hunk noctalia; };
+      extraSpecialArgs = { inherit zen-browser private-fonts hunk noctalia hex; };
       modules = [ ./home.nix ];
     };
 
