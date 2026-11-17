@@ -307,7 +307,6 @@ binds {
     Mod+Space hotkey-overlay-title="Application Launcher" {
         spawn "noctalia" "msg" "panel-toggle" "launcher";
     }
-    Ctrl+Space hotkey-overlay-title="Speech to Text" { spawn "fish" "-c" "handy-toggle"; }
     Mod+V hotkey-overlay-title="Clipboard Manager" {
         spawn "noctalia" "msg" "panel-toggle" "clipboard";
     }
